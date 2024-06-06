@@ -25,14 +25,15 @@ const navItems = ref<INavItem[]>([
     </button>
 
     <nav class="w-full flex flex-col gap-5 px-3">
-      <div
+      <router-link
         v-for="navItem in navItems"
         :key="navItem.path"
+        :to="navItem.path"
         class="w-full flex items-center justify-center gap-3 px-6 cursor-pointer"
       >
         <i :class="navItem.icon" class="fa-solid"></i>
-        <router-link :to="navItem.path">{{ navItem.name }}</router-link>
-      </div>
+        <h1>{{ navItem.name }}</h1>
+      </router-link>
     </nav>
   </section>
 </template>
