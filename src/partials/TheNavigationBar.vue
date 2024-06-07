@@ -1,6 +1,11 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { INavItem } from "../ts/navigation.interface.ts";
+import { useTaskStore } from "../pinia/task.pinia.ts";
+import CreateTaskDialog from "../components/CreateTaskDialog.vue";
+import BaseButton from "../components/base/BaseButton.vue";
+
+const taskStore = useTaskStore();
 
 const navItems = ref<INavItem[]>([
   {
@@ -18,11 +23,16 @@ const navItems = ref<INavItem[]>([
 
 <template>
   <section
-    class="bg-white h-full w-60 flex flex-col items-center gap-8 border-r pt-7"
+    class="bg-white h-full w-72 flex flex-col items-center gap-8 border-r pt-7"
   >
-    <button class="rounded-2xl box-shadow-all-sides py-2 px-4 text-lg">
-      Add Task
-    </button>
+    <BaseButton
+      :height="40"
+      :width="120"
+      title="Add Task"
+      @click.left="taskStore.createTaskDialog = true"
+    />
+
+    <CreateTaskDialog v-if="taskStore" />
 
     <nav class="w-full flex flex-col gap-5 px-3">
       <router-link
