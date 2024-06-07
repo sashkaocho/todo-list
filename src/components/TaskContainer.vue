@@ -2,17 +2,22 @@
 defineProps<{
   title: string;
   time: string;
+  description?: string;
 }>();
 </script>
 
 <template>
   <div
-    class="bg-white box-shadow-all-sides flex flex-col items-center rounded-lg"
+    class="bg-white box-shadow-all-sides flex flex-col justify-between rounded-lg py-3 px-5 h-44 cursor-pointer"
   >
-    <div class="flex items-center">
+    <div class="w-full flex items-center justify-between">
+      <h1 class="text-2xl">{{ title }}</h1>
       <input type="checkbox" />
-      <h1>{{ title }}</h1>
     </div>
-    <h1>{{ time }}</h1>
+    <p class="text-sm">{{ description }}</p>
+    <div class="flex justify-between">
+      <h2 class="text-lg">{{ time }}</h2>
+      <h2 class="text-primary-700">to do</h2>
+    </div>
   </div>
 </template>
