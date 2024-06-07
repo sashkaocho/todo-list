@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+input:focus, textarea:focus {
+  outline: none;
+}
+
 .box-shadow-all-sides {
   box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.1);
+}
+
+.backdrop {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.modal-enter-active, .modal-leave-active {
+  transition: all 0.2s ease;
+}
+
+.modal-enter-from, .modal-leave-to {
+  opacity: 0;
+  transform: scale(1.1);
 }
