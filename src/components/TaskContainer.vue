@@ -1,9 +1,23 @@
 <script lang="ts" setup>
-defineProps<{
+import { computed } from "vue";
+
+const props = defineProps<{
   title: string;
   time: string;
+  status: string;
   description?: string;
 }>();
+
+const statusColor = computed(() => {
+  switch (props.status) {
+    case "to do":
+      return "#3e3ac8";
+    case "done":
+      return "#16a34a";
+    case "failed":
+      return "#dc2626";
+  }
+});
 </script>
 
 <template>
@@ -17,7 +31,9 @@ defineProps<{
     <p class="text-sm">{{ description }}</p>
     <div class="flex justify-between">
       <h2 class="text-lg">{{ time }}</h2>
-      <h2 class="text-primary-700">to do</h2>
+      <h2 :style="`color: ${statusColor}`" class="text-primary-700">
+        {{ status }}
+      </h2>
     </div>
   </div>
 </template>
