@@ -6,16 +6,18 @@ const tasks = [
     id: 1,
     title: "Clean house",
     time: "12:00",
+    status: "to do",
     description:
       "Clean house and manage that all tasks is done so we are gonna make pilesos on and start cleaning",
   },
-  { id: 1, title: "Workout", time: "13:00" },
+  { id: 1, title: "Workout", time: "13:00", status: "done" },
   {
     id: 1,
     title: "Eat",
     time: "11:00",
+    status: "to do",
   },
-  { id: 1, title: "Read Book", time: "15:00" },
+  { id: 1, title: "Read Book", time: "15:00", status: "failed" },
 ];
 </script>
 
@@ -31,6 +33,7 @@ const tasks = [
         v-for="task in tasks"
         :key="task.title + task.time"
         :description="task.description"
+        :status="task.status"
         :time="task.time"
         :title="task.title"
       />
