@@ -10,8 +10,8 @@ const taskStore = useTaskStore();
 </script>
 
 <template>
-  <teleport to="#modal">
-    <transition name="modal">
+  <Teleport to="#modal">
+    <Transition name="modal">
       <dialog
         v-if="taskStore.createTaskDialog"
         class="fixed top-0 left-0 flex justify-center items-center w-full h-full backdrop"
@@ -31,6 +31,6 @@ const taskStore = useTaskStore();
           <slot />
         </div>
       </dialog>
-    </transition>
-  </teleport>
+    </Transition>
+  </Teleport>
 </template>
