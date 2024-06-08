@@ -34,16 +34,19 @@ const navItems = ref<INavItem[]>([
 
     <CreateTaskDialog v-if="taskStore" />
 
-    <nav class="w-full flex flex-col gap-5 px-3">
-      <router-link
+    <nav class="w-full flex flex-col gap-5">
+      <RouterLink
         v-for="navItem in navItems"
         :key="navItem.path"
         :to="navItem.path"
-        class="w-full flex items-center justify-center gap-3 px-6 cursor-pointer"
+        active-class="border-primary-700 text-primary-700"
+        class="w-full flex items-center justify-center gap-3 px-6 cursor-pointer border-r-2"
       >
-        <i :class="navItem.icon" class="fa-solid"></i>
-        <h1>{{ navItem.name }}</h1>
-      </router-link>
+        <i :class="navItem.icon" class="fa-solid transition-all"></i>
+        <h1 class="transition-all">
+          {{ navItem.name }}
+        </h1>
+      </RouterLink>
     </nav>
   </section>
 </template>
