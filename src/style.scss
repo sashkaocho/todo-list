@@ -1,3 +1,61 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+h1 {
+  font-size: 24px;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  font-size: 12px;
+}
+
+p {
+  font-size: 14px;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+}
+
+.box-shadow-all-sides {
+  box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.1);
+}
+
+.box-shadow-all-sides-hovered {
+  box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.backdrop {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.modal-enter-active, .modal-leave-active {
+  transition: all 0.2s ease;
+}
+
+.modal-enter-from, .modal-leave-to {
+  opacity: 0;
+  transform: scale(1.1);
+}
