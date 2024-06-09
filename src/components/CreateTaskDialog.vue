@@ -73,7 +73,7 @@ const closeCreateTaskDialog = (): void => {
     @close="closeCreateTaskDialog"
   >
     <div>
-      <form class="flex flex-col gap-7" @submit.prevent="validateForm">
+      <form class="flex flex-col gap-7" @submit.prevent="createTask">
         <BaseTextField
           v-model="nameModel"
           :maxlength="24"
@@ -107,7 +107,6 @@ const closeCreateTaskDialog = (): void => {
             :width="200"
             class=""
             title="Create task"
-            @click="createTask"
           />
           <h5 class="text-error">No field should be empty</h5>
         </div>
