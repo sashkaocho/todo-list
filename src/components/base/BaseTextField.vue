@@ -24,15 +24,13 @@ const model = defineModel<string>();
       :placeholder="`Type ${label.toLowerCase()}...`"
       :type="type"
       class="border h-9 rounded-md px-3 text-sm"
-      @click="console.log(model)"
     />
     <textarea
       v-else
       v-model="model"
       :maxlength="maxlength"
       :placeholder="`Type ${label.toLowerCase()}...`"
-      class="border h-15 rounded-md px-3 py-2 text-sm"
-      @click="console.log(model)"
+      class="border h-20 rounded-md px-3 py-2 text-sm"
     />
   </div>
 </template>

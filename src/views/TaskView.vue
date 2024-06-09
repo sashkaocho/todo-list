@@ -1,36 +1,43 @@
 <script lang="ts" setup>
 import TaskContainer from "../components/TaskContainer.vue";
 import BaseSelect from "../components/base/BaseSelect.vue";
-import { ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useTaskStore } from "../pinia/task.pinia.ts";
 import TaskDetailsDialog from "../components/TaskDetailsDialog.vue";
+import { ETaskGetters } from "../ts/enums/pinia/task.enum.ts";
+import { ITask } from "../ts/interfaces/task.interface.ts";
+import { ETaskStatus } from "../ts/enums/task.enum.ts";
+import { getTasks } from "../utils/task.ts";
 
 const taskStore = useTaskStore();
 
-const tasks = [
-  {
-    id: 1,
-    title: "Clean house and make all sd",
-    time: "12:00",
-    status: "to do",
-    description:
-      "Clean house and manage that all tasks is done so we are gonna make pilesos on and start cleaning also idiot to make sense asasdfasdfa sdf sdfsd",
-  },
-  { id: 1, title: "Workout", time: "13:00", status: "done" },
-  {
-    id: 1,
-    title: "Eat",
-    time: "11:00",
-    status: "to do",
-  },
-  { id: 1, title: "Read Book", time: "15:00", status: "failed" },
+const filterItems = [
+  "All",
+  ETaskStatus.TODO,
+  ETaskStatus.DONE,
+  ETaskStatus.FAILED,
 ];
 
-const filterItems = ["All", "To do", "Done", "Failed"];
+const selectedFilter = ref<string>("All");
 
-const selectedTask = ref(null);
+const selectedTask = ref<ITask | null>(null);
 
-const selectTask = (task) => {
+const tasks = computed<ITask[]>(() => taskStore[ETaskGetters.GetTasks]);
+
+const filteredTasks = computed<ITask[]>(() => {
+  if (selectedFilter.value === "All") {
+    return tasks.value;
+  }
+  return tasks.value.filter(
+    (task: ITask) => task.status === selectedFilter.value.toLowerCase(),
+  );
+});
+
+onMounted(async (): Promise<void> => {
+  await getTasks();
+});
+
+const selectTask = (task: ITask): void => {
   taskStore.taskDetailsDialog = true;
   selectedTask.value = task;
 };
@@ -40,19 +47,21 @@ const selectTask = (task) => {
   <article class="flex flex-col gap-10">
     <section class="flex items-center justify-between">
       <h2>Hello, I'm your todo manager 👋</h2>
-      <BaseSelect :items="filterItems" :width="150" />
+      <BaseSelect v-model="selectedFilter" :items="filterItems" :width="150" />
     </section>
 
     <TaskDetailsDialog :task="selectedTask" />
 
     <section class="grid grid-cols-3 gap-y-4 gap-x-4">
       <TaskContainer
-        v-for="task in tasks"
-        :key="task.title + task.time"
-        :description="task.description"
-        :status="task.status"
-        :time="task.time"
-        :title="task.title"
+        v-for="task in filteredTasks"
+        :id="task.id"
+        :key="task?.name + task?.status"
+        :description="task?.description"
+        :endDate="task?.end_date"
+        :startDate="task?.start_date"
+        :status="task?.status"
+        :title="task?.name"
         @click="selectTask(task)"
       />
     </section>
