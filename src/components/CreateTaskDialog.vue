@@ -7,6 +7,7 @@ import { useTaskStore } from "../pinia/task.pinia.ts";
 import { EColor } from "../ts/enums/color.enum.ts";
 import { ref } from "vue";
 import axios from "axios";
+import { getTasks } from "../utils/task.ts";
 
 const taskStore = useTaskStore();
 
@@ -43,6 +44,7 @@ const createTask = async (): Promise<void> => {
     };
 
     await axios.post("http://127.0.0.1:8000/api/tasks", newTask);
+    await getTasks();
   } catch (err) {
     console.log(err);
   } finally {
@@ -107,9 +109,7 @@ const closeCreateTaskDialog = (): void => {
             title="Create task"
             @click="createTask"
           />
-          <h5 v-if="!formIsValid" class="text-error">
-            No field should be empty
-          </h5>
+          <h5 class="text-error">No field should be empty</h5>
         </div>
       </form>
     </div>

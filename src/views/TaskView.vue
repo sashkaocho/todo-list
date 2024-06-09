@@ -4,10 +4,10 @@ import BaseSelect from "../components/base/BaseSelect.vue";
 import { computed, onMounted, ref } from "vue";
 import { useTaskStore } from "../pinia/task.pinia.ts";
 import TaskDetailsDialog from "../components/TaskDetailsDialog.vue";
-import axios from "axios";
-import { ETaskActions, ETaskGetters } from "../ts/enums/pinia/task.enum.ts";
+import { ETaskGetters } from "../ts/enums/pinia/task.enum.ts";
 import { ITask } from "../ts/interfaces/task.interface.ts";
 import { ETaskStatus } from "../ts/enums/task.enum.ts";
+import { getTasks } from "../utils/task.ts";
 
 const taskStore = useTaskStore();
 
@@ -34,13 +34,7 @@ const filteredTasks = computed<ITask[]>(() => {
 });
 
 onMounted(async (): Promise<void> => {
-  try {
-    const response = axios.get("http://127.0.0.1:8000/api/tasks");
-
-    taskStore[ETaskActions.SetTasks]((await response).data);
-  } catch (err) {
-    console.log(err);
-  }
+  await getTasks();
 });
 
 const selectTask = (task: ITask): void => {

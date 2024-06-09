@@ -7,6 +7,7 @@ import { computed, ref } from "vue";
 import EditTaskComponent from "./EditTaskComponent.vue";
 import { ITask } from "../ts/interfaces/task.interface.ts";
 import axios from "axios";
+import { getTasks } from "../utils/task.ts";
 
 const props = defineProps<{
   task: ITask | null;
@@ -20,9 +21,10 @@ const dialogTitle = computed<string>(() => {
   return isEditing.value ? "Editing Task" : "Task Details";
 });
 
-const deleteTask = async () => {
+const deleteTask = async (): Promise<void> => {
   try {
     await axios.delete(`http://127.0.0.1:8000/api/tasks/${props.task?.id}`);
+    await getTasks();
   } catch (err) {
     console.log(err);
   } finally {
