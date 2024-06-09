@@ -6,21 +6,28 @@ defineProps<{
   field: string;
 }>();
 
-const model = defineModel();
+const model = defineModel<string>();
 </script>
 
 <template>
   <div class="flex flex-col gap-1.5">
     <label class="text-sm text-primary-700">{{ label }}</label>
-    <component
-      :is="field === 'textarea' ? 'textarea' : 'input'"
+    <input
+      v-if="field === 'input'"
       v-model="model"
-      :class="[field === 'textarea' ? 'h-17 py-2' : 'h-9']"
       :maxlength="maxlength"
       :placeholder="`Type ${label.toLowerCase()}...`"
       :type="type"
-      class="border rounded-md px-3 text-sm"
+      class="border h-9 rounded-md px-3 text-sm"
       @click="console.log(model)"
-    ></component>
+    />
+    <textarea
+      v-else
+      v-model="model"
+      :maxlength="maxlength"
+      :placeholder="`Type ${label.toLowerCase()}...`"
+      class="border h-15 rounded-md px-3 py-2 text-sm"
+      @click="console.log(model)"
+    />
   </div>
 </template>
