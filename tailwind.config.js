@@ -7,6 +7,7 @@ export default {
         success: "#16a34a",
         warning: "#ffc107",
         error: "#dc2626",
+        secondary: "#06b6d4",
         primary: {
           50: "#eef3ff",
           100: "#e0e8ff",
