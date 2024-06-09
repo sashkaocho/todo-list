@@ -31,7 +31,7 @@ const model = defineModel<string>();
       v-model="model"
       :maxlength="maxlength"
       :placeholder="`Type ${label.toLowerCase()}...`"
-      class="border h-15 rounded-md px-3 py-2 text-sm"
+      class="border h-20 rounded-md px-3 py-2 text-sm"
       @click="console.log(model)"
     />
   </div>
