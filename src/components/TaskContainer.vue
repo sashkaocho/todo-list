@@ -1,22 +1,49 @@
 <script lang="ts" setup>
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
+import { formatDate } from "../utils/helpers/date.ts";
+import axios from "axios";
+import { getTasks } from "../utils/task.ts";
 
 const props = defineProps<{
+  id: number;
   title: string;
-  time: string;
   status: string;
+  startDate: string;
+  endDate: string;
   description?: string;
 }>();
 
+const taskIsDoneModel = ref<boolean>(false);
+
+const formattedTaskTime = computed(() => {
+  return formatDate(props.startDate) + " - " + formatDate(props.endDate);
+});
+
 const statusColor = computed(() => {
   switch (props.status) {
-    case "to do":
+    case "todo":
       return "#3e3ac8";
     case "done":
       return "#16a34a";
     case "failed":
       return "#dc2626";
   }
+});
+
+const finishTask = async (): Promise<void> => {
+  try {
+    await axios.patch(`http://127.0.0.1:8000/api/tasks/status/${props.id}`, {
+      status: "done",
+    });
+    await getTasks();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+watch(taskIsDoneModel, (value) => {
+  if (!value) return;
+  finishTask();
 });
 </script>
 
@@ -26,11 +53,18 @@ const statusColor = computed(() => {
   >
     <div class="w-full flex items-center justify-between">
       <h1>{{ title }}</h1>
-      <input type="checkbox" />
+      <input
+        v-if="status === 'todo'"
+        v-model="taskIsDoneModel"
+        type="checkbox"
+        @click.stop
+      />
     </div>
     <p>{{ description }}</p>
     <div class="flex justify-between">
-      <h3>{{ time }}</h3>
+      <h4>
+        {{ formattedTaskTime }}
+      </h4>
       <h4 :style="`color: ${statusColor}`" class="text-primary-700">
         {{ status }}
       </h4>
