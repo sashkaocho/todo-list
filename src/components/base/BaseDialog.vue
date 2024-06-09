@@ -17,7 +17,7 @@ defineEmits(["close"]);
       >
         <div
           :style="`width: ${width}px`"
-          class="relative max-h-[500px] bg-white box-shadow-all-sides rounded-xl px-10 py-5 flex flex-col gap-5"
+          class="relative max-h-[600px] bg-white box-shadow-all-sides rounded-xl px-10 py-5 flex flex-col gap-5"
         >
           <div class="flex items-center justify-between">
             <h2>{{ title }}</h2>
