@@ -30,6 +30,10 @@ p {
   font-size: 14px;
 }
 
+textarea {
+  resize: none;
+}
+
 input:focus, textarea:focus {
   outline: none;
 }

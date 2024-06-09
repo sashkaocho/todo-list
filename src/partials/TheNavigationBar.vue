@@ -27,7 +27,7 @@ const navItems = ref<INavItem[]>([
     class="bg-white h-full w-72 flex flex-col items-center gap-8 border-r pt-10"
   >
     <BaseButton
-      :color="EColor.primary"
+      :color="EColor.secondary"
       :height="40"
       :width="120"
       title="Add Task"
