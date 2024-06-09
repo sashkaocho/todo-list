@@ -6,28 +6,56 @@ import BaseTextField from "./base/BaseTextField.vue";
 import { useTaskStore } from "../pinia/task.pinia.ts";
 import { EColor } from "../ts/enums/color.enum.ts";
 import { ref } from "vue";
+import axios from "axios";
 
 const taskStore = useTaskStore();
 
 const nameModel = ref<string>("");
 const descriptionModel = ref<string>("");
-const startTimeModel = ref<string>("");
-const endTimeModel = ref<string>("");
+const startDateModel = ref<string>("");
+const endDateModel = ref<string>("");
 
-const formIsValid = ref<boolean>(true);
+const formIsValid = ref<boolean>(false);
 
 const validateForm = (): void => {
   if (
     nameModel.value.length === 0 ||
     descriptionModel.value.length === 0 ||
-    startTimeModel.value.length === 0 ||
-    endTimeModel.value.length === 0
+    startDateModel.value.length === 0 ||
+    endDateModel.value.length === 0
   ) {
     formIsValid.value = false;
     return;
   }
 
   formIsValid.value = true;
+};
+
+const createTask = async (): Promise<void> => {
+  validateForm();
+  if (!formIsValid.value) return;
+  try {
+    const newTask = {
+      name: nameModel.value,
+      description: descriptionModel.value,
+      start_date: startDateModel.value,
+      end_date: endDateModel.value,
+    };
+
+    await axios.post("http://127.0.0.1:8000/api/tasks", newTask);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    emptyFields();
+    closeCreateTaskDialog();
+  }
+};
+
+const emptyFields = (): void => {
+  nameModel.value = "";
+  descriptionModel.value = "";
+  startDateModel.value = "";
+  endDateModel.value = "";
 };
 
 const closeCreateTaskDialog = (): void => {
@@ -59,15 +87,15 @@ const closeCreateTaskDialog = (): void => {
           type="text"
         />
         <BaseTextField
-          v-model="startTimeModel"
+          v-model="startDateModel"
           field="input"
-          label="Start time"
+          label="Start date"
           type="datetime-local"
         />
         <BaseTextField
-          v-model="endTimeModel"
+          v-model="endDateModel"
           field="input"
-          label="End time"
+          label="End date"
           type="datetime-local"
         />
         <div class="flex justify-between items-center mt-2 mb-5">
@@ -77,6 +105,7 @@ const closeCreateTaskDialog = (): void => {
             :width="200"
             class=""
             title="Create task"
+            @click="createTask"
           />
           <h5 v-if="!formIsValid" class="text-error">
             No field should be empty
