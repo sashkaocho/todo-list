@@ -5,9 +5,11 @@ import BaseButton from "./base/BaseButton.vue";
 import { EColor } from "../ts/enums/color.enum.ts";
 import { computed, ref } from "vue";
 import EditTaskComponent from "./EditTaskComponent.vue";
+import { ITask } from "../ts/interfaces/task.interface.ts";
+import axios from "axios";
 
-defineProps<{
-  task: object;
+const props = defineProps<{
+  task: ITask | null;
 }>();
 
 const taskStore = useTaskStore();
@@ -17,6 +19,16 @@ const isEditing = ref<boolean>(false);
 const dialogTitle = computed<string>(() => {
   return isEditing.value ? "Editing Task" : "Task Details";
 });
+
+const deleteTask = async () => {
+  try {
+    await axios.delete(`http://127.0.0.1:8000/api/tasks/${props.task?.id}`);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    closeTaskDetails();
+  }
+};
 
 const closeTaskDetails = (): void => {
   taskStore.taskDetailsDialog = false;
@@ -37,9 +49,9 @@ const startEditing = (): void => {
   >
     <EditTaskComponent v-if="isEditing" @cancel="isEditing = false" />
     <section v-else class="flex flex-col gap-4">
-      <h3 class="text-primary-700">{{ task.title }}</h3>
+      <h3 class="text-primary-700">{{ task.name }}</h3>
       <p>{{ task.description }}</p>
-      <h3>{{ task.time }}</h3>
+      <h3>{{ task.start_date }}</h3>
       <h4>{{ task.status }}</h4>
       <div class="flex items-center justify-between mt-2">
         <BaseButton
@@ -54,6 +66,7 @@ const startEditing = (): void => {
           :height="40"
           :width="100"
           title="Delete"
+          @click="deleteTask"
         />
       </div>
     </section>
