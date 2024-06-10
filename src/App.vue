@@ -5,7 +5,7 @@ import TheNavigationBar from "./partials/TheNavigationBar.vue";
 <template>
   <div class="flex h-[100vh]">
     <TheNavigationBar />
-    <main class="w-full pt-12 px-20 bg-gray-50">
+    <main class="w-full pt-12 px-12 bg-gray-50">
       <RouterView />
     </main>
   </div>

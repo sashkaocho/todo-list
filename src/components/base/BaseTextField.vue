@@ -4,6 +4,7 @@ defineProps<{
   type: string;
   maxlength?: number;
   field: string;
+  rule?: string;
 }>();
 
 const model = defineModel<string>();
@@ -15,6 +16,9 @@ const model = defineModel<string>();
       <label class="text-sm text-primary-700">{{ label }} </label>
       <p v-if="maxlength" class="text-warning text-xs ml-2">
         Max {{ maxlength }} characters*
+      </p>
+      <p v-if="rule" class="text-warning text-xs ml-2">
+        {{ rule }}
       </p>
     </div>
     <input

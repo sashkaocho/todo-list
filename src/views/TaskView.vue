@@ -8,8 +8,12 @@ import { ETaskGetters } from "../ts/enums/pinia/task.enum.ts";
 import { ITask } from "../ts/interfaces/task.interface.ts";
 import { ETaskStatus } from "../ts/enums/task.enum.ts";
 import { getTasks } from "../utils/task.ts";
+import { useWindowSize } from "@vueuse/core";
+import Pusher from "pusher-js";
 
 const taskStore = useTaskStore();
+
+const { height } = useWindowSize();
 
 const filterItems = [
   "All",
@@ -35,6 +39,18 @@ const filteredTasks = computed<ITask[]>(() => {
 
 onMounted(async (): Promise<void> => {
   await getTasks();
+
+  Pusher.logToConsole = true;
+
+  const pusher = new Pusher(import.meta.env.VITE_PUSHER_APP_KEY, {
+    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+  });
+
+  const channel = pusher.subscribe("todo-list");
+
+  channel.bind("task-reminder", function (data: any) {
+    alert(`you have ${data.message.name} task in 5 minutes`);
+  });
 });
 
 const selectTask = (task: ITask): void => {
@@ -52,7 +68,10 @@ const selectTask = (task: ITask): void => {
 
     <TaskDetailsDialog :task="selectedTask" />
 
-    <section class="grid grid-cols-3 gap-y-4 gap-x-4">
+    <section
+      :style="`height: ${height - 170}px`"
+      class="grid grid-cols-3 gap-y-4 gap-x-4 py-4 px-5 overflow-y-scroll"
+    >
       <TaskContainer
         v-for="task in filteredTasks"
         :id="task.id"
