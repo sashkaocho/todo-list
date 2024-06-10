@@ -8,6 +8,7 @@ import { EColor } from "../ts/enums/color.enum.ts";
 import { reactive, ref } from "vue";
 import axios from "axios";
 import { getTasks } from "../utils/task.ts";
+import { convertIsoToCustomFormat } from "../utils/helpers/date.ts";
 
 const taskStore = useTaskStore();
 
@@ -25,7 +26,8 @@ const validateForm = (): void => {
     formData.nameModel.length === 0 ||
     formData.descriptionModel.length === 0 ||
     formData.startDateModel.length === 0 ||
-    formData.endDateModel.length === 0
+    formData.endDateModel.length === 0 ||
+    formData.startDateModel >= formData.endDateModel
   ) {
     formIsValid.value = false;
     return;
@@ -41,8 +43,8 @@ const createTask = async (): Promise<void> => {
     const newTask = {
       name: formData.nameModel,
       description: formData.descriptionModel,
-      start_date: formData.startDateModel,
-      end_date: formData.endDateModel,
+      start_date: convertIsoToCustomFormat(formData.startDateModel),
+      end_date: convertIsoToCustomFormat(formData.endDateModel),
     };
 
     await axios.post("http://127.0.0.1:8000/api/tasks", newTask);
@@ -94,6 +96,7 @@ const closeCreateTaskDialog = (): void => {
           v-model="formData.startDateModel"
           field="input"
           label="Start date"
+          rule="Start date should be less than end date*"
           type="datetime-local"
         />
         <BaseTextField
